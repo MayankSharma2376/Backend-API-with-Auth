@@ -1,4 +1,4 @@
-import { User } from "../models/user.model";
+import { User } from "../models/user.model.js";
 
 const registerUser = async(req, res)=>{
     try {
@@ -48,6 +48,83 @@ const registerUser = async(req, res)=>{
 }
 
 
+
+const loginUser = async(req, res)=>{
+    try{
+
+        // checking if user already exists
+
+        const {email, password} = req.body
+
+        const user = await User.findOne({
+            email: email.toLowerCase()
+        })
+
+
+        if(!user){
+            return res.status(400).json({
+                message: "User Not Found"
+            })
+        }
+
+
+        const isMatch = await user.comparePassword(password);
+        if(!isMatch) return res.status(400).json({
+            message: "Invalid Credentials"
+        })
+
+        res.status(200).json({
+            message: "User LoggedIn",
+            user: {
+                id: user._id,
+                email: user.email,
+                username: user.username
+            }
+        })
+
+
+
+        
+
+
+
+    }catch(err){
+
+        res.status(500).json({
+            message: "Internal Server Error"
+        })
+
+    }
+}
+
+
+const logoutUser = async()=>{
+    try{
+        const {email} = req.body
+        const user = await User.findOne({
+            email
+        })
+
+        if(!user){
+            return res.status(404).json({
+                message: "User Not Found"
+            })
+        }
+
+        res.status(200).json({
+            message: "LoggedOut Successfully"
+        })
+
+    }catch(err){
+        res.status(500).json({
+            messgae: "Interal Server Error", err
+        })
+
+    }
+}
+
 export {
-    registerUser
+    registerUser,
+    loginUser,
+    logoutUser
 }
