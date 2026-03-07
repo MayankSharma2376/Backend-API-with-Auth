@@ -17,7 +17,7 @@ const registerUser = async(req, res)=>{
         })
 
         if(existing){
-            res.status(400).json({message: "User already exists"})
+           return res.status(400).json({message: "User already exists"})
         }
 
 
@@ -40,7 +40,7 @@ const registerUser = async(req, res)=>{
 
     }catch(err){
         res.status(500).json({
-            message: "Internal Server Error", err: "Error Message"
+            message: "Internal Server Error"
         })
 
     }
@@ -98,7 +98,7 @@ const loginUser = async(req, res)=>{
 }
 
 
-const logoutUser = async()=>{
+const logoutUser = async(req, res)=>{
     try{
         const {email} = req.body
         const user = await User.findOne({
@@ -117,7 +117,7 @@ const logoutUser = async()=>{
 
     }catch(err){
         res.status(500).json({
-            messgae: "Interal Server Error", err
+            messgae: "Interal Server Error"
         })
 
     }

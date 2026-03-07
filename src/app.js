@@ -3,7 +3,7 @@ import express from "express"
 const app = express(); // create an express app
 
 
-app.use(express.json())
+
 
 
 // import routes for incoming request workflow
@@ -11,7 +11,10 @@ app.use(express.json())
 import userRouter from "./routes/user.route.js"
 import postRouter from "./routes/user.route.js"
 
+
+app.use(express.json())
 app.use("/api/v1/users", userRouter)
+
 app.use("/api/v1/posts", postRouter)
 
 
